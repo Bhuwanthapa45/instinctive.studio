@@ -5,9 +5,10 @@ const prisma = new PrismaClient();
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = Number(params.id);
+  const { id: idParam } = await params;
+  const id = Number(idParam);
 
   if (isNaN(id)) {
     return NextResponse.json({ error: 'Invalid incident ID' }, { status: 400 });
